@@ -2,8 +2,10 @@ package com.sridhar.BookVault.controller;
 
 import com.sridhar.BookVault.domain.Book;
 import com.sridhar.BookVault.domain.Review;
+import com.sridhar.BookVault.domain.Users;
 import com.sridhar.BookVault.service.BookService;
 import com.sridhar.BookVault.service.ReviewService;
+import com.sridhar.BookVault.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,22 @@ public class UserController {
 
     @Autowired
     ReviewService reviewService;
+
+    @Autowired
+    UserService userService;
+
+    @PostMapping("/user/register")
+    public ResponseEntity<?> register(@RequestBody Users user){
+       Users user1 = userService.register(user);
+       return new ResponseEntity<>(user1,HttpStatus.CREATED);
+    }
+
+    @PostMapping("/user/logging")
+    public ResponseEntity<?> logging(@RequestBody Users user){
+        String response  =  userService.logging(user);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getBook(@PathVariable("id") Integer id){
         Book book = bookService.getBook(id);
