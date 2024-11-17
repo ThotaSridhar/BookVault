@@ -23,6 +23,8 @@ public class UserServiceImpl implements UserService {
     AuthenticationManager authenticationManager;
     @Autowired
     UserDetailsService userDetailsService;
+    @Autowired
+    JwtService jwtService;
 
     private  BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     @Override
@@ -40,9 +42,8 @@ public class UserServiceImpl implements UserService {
                 authenticate(new UsernamePasswordAuthenticationToken
                         (user.getUsername(),user.getPassword()));
         if(authentication.isAuthenticated()){
-            return "success";
+            return jwtService.generateToken(user.getUsername());
         }
-        System.out.println(authentication.toString());
-        return "failure";
+        return "user not found";
     }
 }
